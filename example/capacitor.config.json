@@ -1,6 +1,6 @@
 {
-  "appId": "com.example.plugin",
-  "appName": "example",
+  "appId": "com.github.taretmch",
+  "appName": "SampleApp",
   "bundledWebRuntime": false,
   "webDir": "dist",
   "plugins": {
