@@ -1,5 +1,6 @@
 package com.github.taretmch.capacitor.auth0
 
+import android.util.Log
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
@@ -10,6 +11,9 @@ import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
 import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @CapacitorPlugin(name = "CapacitorAuth0")
 class CapacitorAuth0Plugin : Plugin() {
@@ -31,34 +35,38 @@ class CapacitorAuth0Plugin : Plugin() {
     }
 
     @PluginMethod
-    suspend fun login(call: PluginCall) {
-        try {
-            val credentials = WebAuthProvider.login(this.auth0)
-                .withScheme("demo")
-                .withScope("openid profile email")
-                .await(context)
-            val userProfile = getUserProfile(credentials.accessToken)
+    fun login(call: PluginCall) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val credentials = WebAuthProvider.login(auth0)
+                        .withScheme("demo")
+                        .withScope("openid profile email")
+                        .await(context)
+                val userProfile = getUserProfile(credentials.accessToken)
 
-            val data = JSObject()
-            data.put("id", userProfile.getId())
-            data.put("name", userProfile.name)
-            data.put("email", userProfile.email)
-            call.resolve(data)
-        } catch(e: AuthenticationException) {
-            call.reject(e.getDescription())
+                val data = JSObject()
+                data.put("id", userProfile.getId())
+                data.put("name", userProfile.name)
+                data.put("email", userProfile.email)
+                call.resolve(data)
+            } catch(e: AuthenticationException) {
+                call.reject(e.getDescription())
+            }
         }
     }
 
     @PluginMethod
-    suspend fun logout(call: PluginCall) {
-        try {
-            WebAuthProvider.logout(this.auth0)
-                .withScheme("demo")
-                .await(context)
+    fun logout(call: PluginCall) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                WebAuthProvider.logout(auth0)
+                        .withScheme("demo")
+                        .await(context)
 
-            call.resolve()
-        } catch (e: AuthenticationException) {
-            call.reject(e.getDescription())
+                call.resolve()
+            } catch (e: AuthenticationException) {
+                call.reject(e.getDescription())
+            }
         }
     }
 
