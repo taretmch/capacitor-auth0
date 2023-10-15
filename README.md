@@ -9,6 +9,46 @@ npm install @taretmch/capacitor-auth0
 npx cap sync
 ```
 
+### For iOS
+
+Setup Custom URL Scheme at `Info.plist`.
+
+```
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
+		</array>
+	</dict>
+</array>
+```
+
+### For Android
+
+Setup Auth0 domain & clientId at `android/app/src/main/res/values/strings.xml`.
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="com_auth0_domain">{AUTH0_DOMAIN}</string>
+    <string name="com_auth0_client_id">{AUTH0_CLIENT_ID}</string>
+</resources>
+```
+
+Add manifestPlaceholders at `android/app/build.gradle`.
+
+```gradle
+android {
+    ...
+    defaultConfig {
+        ...
+        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "demo"]
+    }
+}
+```
+
 ## API
 
 <docgen-index>
