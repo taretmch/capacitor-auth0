@@ -1,6 +1,5 @@
 package com.github.taretmch.capacitor.auth0
 
-import android.R
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
@@ -12,19 +11,29 @@ import com.getcapacitor.PluginCall
 import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 
-
 @CapacitorPlugin(name = "CapacitorAuth0")
 class CapacitorAuth0Plugin : Plugin() {
 
-    private val auth0: Auth0 = Auth0(
-        context.resources.getString(R.string.com_auth0_client_id),
-        context.resources.getString(R.string.com_auth0_domain)
-    )
+    private lateinit var auth0: Auth0
+
+    @PluginMethod
+    fun configure(call: PluginCall) {
+        try {
+            val clientId = call.getString("clientId")
+                    ?: throw IllegalArgumentException("clientId is required.")
+            val domain = call.getString("domain")
+                    ?: throw IllegalArgumentException("domain is required.")
+            this.auth0 = Auth0(clientId, domain)
+            call.resolve()
+        } catch (e: IllegalArgumentException) {
+            call.reject(e.message)
+        }
+    }
 
     @PluginMethod
     suspend fun login(call: PluginCall) {
         try {
-            val credentials = WebAuthProvider.login(auth0)
+            val credentials = WebAuthProvider.login(this.auth0)
                 .withScheme("demo")
                 .withScope("openid profile email")
                 .await(context)
@@ -43,7 +52,7 @@ class CapacitorAuth0Plugin : Plugin() {
     @PluginMethod
     suspend fun logout(call: PluginCall) {
         try {
-            WebAuthProvider.logout(auth0)
+            WebAuthProvider.logout(this.auth0)
                 .withScheme("demo")
                 .await(context)
 
@@ -54,7 +63,7 @@ class CapacitorAuth0Plugin : Plugin() {
     }
 
     private suspend fun getUserProfile(accessToken: String): UserProfile {
-        var apiClient = AuthenticationAPIClient(auth0)
+        val apiClient = AuthenticationAPIClient(this.auth0)
         return apiClient.userInfo(accessToken).await()
     }
 

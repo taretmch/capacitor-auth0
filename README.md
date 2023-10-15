@@ -13,6 +13,7 @@ npx cap sync
 
 <docgen-index>
 
+* [`configure(...)`](#configure)
 * [`login()`](#login)
 * [`logout()`](#logout)
 * [Interfaces](#interfaces)
@@ -21,6 +22,19 @@ npx cap sync
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+
+### configure(...)
+
+```typescript
+configure(options: CapacitorAuth0Conf) => Promise<void>
+```
+
+| Param         | Type                                                              |
+| ------------- | ----------------------------------------------------------------- |
+| **`options`** | <code><a href="#capacitorauth0conf">CapacitorAuth0Conf</a></code> |
+
+--------------------
+
 
 ### login()
 
@@ -43,6 +57,14 @@ logout() => Promise<void>
 
 
 ### Interfaces
+
+
+#### CapacitorAuth0Conf
+
+| Prop           | Type                |
+| -------------- | ------------------- |
+| **`domain`**   | <code>string</code> |
+| **`clientId`** | <code>string</code> |
 
 
 #### Auth0User

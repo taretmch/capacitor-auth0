@@ -8,10 +8,26 @@ import Auth0
  */
 @objc(CapacitorAuth0Plugin)
 public class CapacitorAuth0Plugin: CAPPlugin {
+    
+    var clientId: String?
+    var domain: String?
+    
+    @objc func configure(_ call: CAPPluginCall) {
+        guard
+            let clientId = call.getString("clientId"),
+            let domain = call.getString("domain") else {
+            call.reject("Failed to init CapacitorAuth0")
+            return
+        }
+        
+        self.clientId = clientId
+        self.domain = domain
+        call.resolve()
+    }
 
     @objc func login(_ call: CAPPluginCall) {
         Auth0
-            .webAuth()
+            .webAuth(clientId: self.clientId!, domain: self.domain!)
             .start { result in
                 switch result {
                 case .success(let credentials):
@@ -30,7 +46,7 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     
     @objc func logout(_ call: CAPPluginCall) {
         Auth0
-            .webAuth()
+            .webAuth(clientId: self.clientId!, domain: self.domain!)
             .clearSession { result in
                 switch result {
                 case .success:
