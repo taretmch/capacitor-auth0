@@ -1,13 +1,18 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { CapacitorAuth0Plugin } from './definitions';
+import type { CapacitorAuth0Plugin, LoginResult } from './definitions';
 
 export class CapacitorAuth0Web
   extends WebPlugin
   implements CapacitorAuth0Plugin
 {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+
+  login(): Promise<LoginResult> {
+    return Promise.reject('Not implemented on web.');
   }
+
+  logout(): Promise<void> {
+    return Promise.reject('Not implemented on web.');
+  }
+
 }
