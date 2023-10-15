@@ -26,8 +26,15 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
 
     @objc func login(_ call: CAPPluginCall) {
+        guard
+            let clientId = self.clientId,
+            let domain = self.domain else {
+            call.reject("Plugin is not configured. Call configure method before login.")
+            return
+        }
+        
         Auth0
-            .webAuth(clientId: self.clientId!, domain: self.domain!)
+            .webAuth(clientId: clientId, domain: domain)
             .start { result in
                 switch result {
                 case .success(let credentials):
@@ -45,8 +52,15 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
     
     @objc func logout(_ call: CAPPluginCall) {
+        guard
+            let clientId = self.clientId,
+            let domain = self.domain else {
+            call.reject("Plugin is not configured. Call configure method before login.")
+            return
+        }
+        
         Auth0
-            .webAuth(clientId: self.clientId!, domain: self.domain!)
+            .webAuth(clientId: clientId, domain: domain)
             .clearSession { result in
                 switch result {
                 case .success:
