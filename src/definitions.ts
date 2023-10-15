@@ -1,10 +1,6 @@
 export interface CapacitorAuth0Plugin {
-  login(): Promise<LoginResult>;
+  login(): Promise<Auth0User>;
   logout(): Promise<void>;
-}
-
-export interface LoginResult {
-  user: Auth0User;
 }
 
 export interface Auth0User {

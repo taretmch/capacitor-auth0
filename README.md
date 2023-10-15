@@ -25,10 +25,10 @@ npx cap sync
 ### login()
 
 ```typescript
-login() => Promise<LoginResult>
+login() => Promise<Auth0User>
 ```
 
-**Returns:** <code>Promise&lt;<a href="#loginresult">LoginResult</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
 --------------------
 
@@ -43,13 +43,6 @@ logout() => Promise<void>
 
 
 ### Interfaces
-
-
-#### LoginResult
-
-| Prop       | Type                                            |
-| ---------- | ----------------------------------------------- |
-| **`user`** | <code><a href="#auth0user">Auth0User</a></code> |
 
 
 #### Auth0User
