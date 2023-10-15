@@ -27,4 +27,18 @@ public class CapacitorAuth0Plugin: CAPPlugin {
             }
 
     }
+    
+    @objc func logout(_ call: CAPPluginCall) {
+        Auth0
+            .webAuth()
+            .clearSession { result in
+                switch result {
+                case .success:
+                    call.resolve()
+                case .failure(let error):
+                    call.reject("Failed with: \(error)")
+                }
+            }
+
+    }
 }
