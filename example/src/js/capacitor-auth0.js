@@ -105,11 +105,6 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
-      CapacitorAuth0.configure({
-        clientId: 'tm7CiMCrfGulU3npSyzqNORSPIQz4EOW',
-        domain: 'dev-taretmch.jp.auth0.com'
-      });
-
       function updateUI(user) {
         if (user) {
           self.shadowRoot.querySelector('#login').style.display = 'none';
