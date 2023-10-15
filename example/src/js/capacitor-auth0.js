@@ -10,8 +10,8 @@ window.customElements.define(
       SplashScreen.hide();
 
       CapacitorAuth0.configure({
-        clientId: 'tm7CiMCrfGulU3npSyzqNORSPIQz4EOW',
-        domain: 'dev-taretmch.jp.auth0.com'
+        clientId: '',
+        domain: ''
       });
 
       const root = this.attachShadow({ mode: 'open' });
