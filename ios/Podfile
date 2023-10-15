@@ -7,10 +7,16 @@ def capacitor_pods
   pod 'CapacitorCordova', :path => '../node_modules/@capacitor/ios'
 end
 
+def auth0_pods
+  pod 'Auth0', '~> 2.5'
+end
+
 target 'Plugin' do
   capacitor_pods
+  auth0_pods
 end
 
 target 'PluginTests' do
   capacitor_pods
+  auth0_pods
 end
