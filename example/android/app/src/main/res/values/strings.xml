@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">SampleApp</string>
     <string name="title_activity_main">SampleApp</string>
+    <string name="com_auth0_domain"></string>
+    <string name="com_auth0_client_id"></string>
 </resources>
