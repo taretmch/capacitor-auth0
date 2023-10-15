@@ -9,6 +9,11 @@ window.customElements.define(
 
       SplashScreen.hide();
 
+      CapacitorAuth0.configure({
+        clientId: 'tm7CiMCrfGulU3npSyzqNORSPIQz4EOW',
+        domain: 'dev-taretmch.jp.auth0.com'
+      });
+
       const root = this.attachShadow({ mode: 'open' });
 
       root.innerHTML = `
@@ -100,6 +105,11 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
+      CapacitorAuth0.configure({
+        clientId: 'tm7CiMCrfGulU3npSyzqNORSPIQz4EOW',
+        domain: 'dev-taretmch.jp.auth0.com'
+      });
+
       function updateUI(user) {
         if (user) {
           self.shadowRoot.querySelector('#login').style.display = 'none';
@@ -117,6 +127,7 @@ window.customElements.define(
 
       self.shadowRoot.querySelector('#login').addEventListener('click', async function (e) {
         try {
+
           const user = await CapacitorAuth0.login()
           console.log('login', user);
           updateUI(user);

@@ -1,4 +1,4 @@
-package com.github.taretmch;
+package com.github.taretmch.example;
 
 import com.getcapacitor.BridgeActivity;
 
