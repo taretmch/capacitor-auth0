@@ -17,7 +17,9 @@ public class CapacitorAuth0Plugin: CAPPlugin {
                 case .success(let credentials):
                     let user = User(from: credentials.idToken)
                     call.resolve([
-                        "user": user
+                        "id": user?.id,
+                        "name": user?.name,
+                        "email": user?.email
                     ])
                 case .failure(let error):
                     call.reject("Failed with: \(error)")
