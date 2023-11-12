@@ -19,7 +19,7 @@ Setup Custom URL Scheme at `Info.plist`.
     <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-            string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
+            <string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
         </array>
     </dict>
 </array>
