@@ -55,7 +55,7 @@ capacitor-auth0 uses [Auth0.Android](https://github.com/auth0/Auth0.Android) int
 
 ### For Web
 
-capacitor-auth0 has no implementation for web. You can use [auth0-js](
+capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https://github.com/auth0/auth0-spa-js) instead.
 
 ## API
 
