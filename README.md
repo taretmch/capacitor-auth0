@@ -13,15 +13,15 @@ npx cap sync
 
 Setup Custom URL Scheme at `Info.plist`.
 
-```plist
+```xml
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
-		</array>
-	</dict>
+    <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
+        </array>
+    </dict>
 </array>
 ```
 
