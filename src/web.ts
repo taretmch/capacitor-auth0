@@ -19,4 +19,12 @@ export class CapacitorAuth0Web
     return Promise.reject('Not implemented on web.');
   }
 
+  isAuthenticated(): Promise<boolean> {
+    return Promise.reject('Not implemented on web.');
+  }
+
+  getUserInfo(): Promise<Auth0User> {
+    return Promise.reject('Not implemented on web.');
+  }
+
 }

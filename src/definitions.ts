@@ -21,6 +21,17 @@ export interface CapacitorAuth0Plugin {
    * @returns Promise<void>
    */
   logout(): Promise<void>;
+
+  /**
+   * Check if a user is authenticated.
+   * @returns Promise<boolean>
+   */
+  isAuthenticated(): Promise<boolean>;
+
+  /**
+   * Get a latest authenticated user profile.
+   */
+  getUserInfo(): Promise<Auth0User>;
 }
 
 /**
