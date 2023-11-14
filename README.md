@@ -13,17 +13,19 @@ npx cap sync
 
 Setup Custom URL Scheme at `Info.plist`.
 
-```
+```xml
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
-		</array>
-	</dict>
+    <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>${PRODUCT_BUNDLE_IDENTIFIER}</string>
+        </array>
+    </dict>
 </array>
 ```
+
+capacitor-auth0 uses [Auth0.swift](https://github.com/auth0/Auth0.swift) internally. For more information, see Auth0.swift quickstart guide.
 
 ### For Android
 
@@ -48,6 +50,12 @@ android {
     }
 }
 ```
+
+capacitor-auth0 uses [Auth0.Android](https://github.com/auth0/Auth0.Android) internally. For more information, see Auth0.Android quickstart guide.
+
+### For Web
+
+capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https://github.com/auth0/auth0-spa-js) instead.
 
 ## API
 

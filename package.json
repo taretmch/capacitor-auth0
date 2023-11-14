@@ -1,7 +1,7 @@
 {
   "name": "@taretmch/capacitor-auth0",
   "version": "5.0.0-beta.3",
-  "description": "Native Auth0 SDK wrappter for capacitor",
+  "description": "Native Auth0 SDK wrapper for capacitor",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
