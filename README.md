@@ -117,12 +117,12 @@ Web Auth: Logout from Auth0.
 ### isAuthenticated()
 
 ```typescript
-isAuthenticated() => Promise<boolean>
+isAuthenticated() => Promise<{ result: boolean; }>
 ```
 
 Check if a user is authenticated.
 
-**Returns:** <code>Promise&lt;boolean&gt;</code>
+**Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
 
 --------------------
 
