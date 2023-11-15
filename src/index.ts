@@ -1,10 +1,10 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { CapacitorAuth0Plugin } from './definitions';
+import type { Auth0Plugin } from './definitions';
 
-const CapacitorAuth0 = registerPlugin<CapacitorAuth0Plugin>('CapacitorAuth0', {
-  web: () => import('./web').then(m => new m.CapacitorAuth0Web()),
+const Auth0 = registerPlugin<Auth0Plugin>('Auth0', {
+  web: () => import('./web').then(m => new m.Auth0Web()),
 });
 
 export * from './definitions';
-export { CapacitorAuth0 };
+export { Auth0 };

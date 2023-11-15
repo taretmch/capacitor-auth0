@@ -1,5 +1,5 @@
 import { SplashScreen } from '@capacitor/splash-screen';
-import { CapacitorAuth0 } from '@taretmch/capacitor-auth0';
+import { Auth0 } from '@taretmch/capacitor-auth0';
 
 window.customElements.define(
   'capacitor-auth0',
@@ -119,7 +119,7 @@ window.customElements.define(
       self.shadowRoot.querySelector('#login').addEventListener('click', async function (e) {
         try {
 
-          const user = await CapacitorAuth0.login()
+          const user = await Auth0.login()
           console.log('login', user);
           updateUI(user);
         } catch (e) {
@@ -129,7 +129,7 @@ window.customElements.define(
 
       self.shadowRoot.querySelector('#logout').addEventListener('click', async function (e) {
         try {
-          const res = await CapacitorAuth0.logout()
+          const res = await Auth0.logout()
           console.log('logout', res);
           updateUI(null);
         } catch (e) {
@@ -137,7 +137,7 @@ window.customElements.define(
         }
       });
 
-      CapacitorAuth0.load().then(user => {
+      Auth0.load().then(user => {
         updateUI(user);
       });
     }

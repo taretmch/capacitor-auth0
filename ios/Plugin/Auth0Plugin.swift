@@ -6,8 +6,8 @@ import Auth0
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
  */
-@objc(CapacitorAuth0Plugin)
-public class CapacitorAuth0Plugin: CAPPlugin {
+@objc(Auth0Plugin)
+public class Auth0Plugin: CAPPlugin {
 
     let credentialsManager: CredentialsManager = CredentialsManager(authentication: Auth0.authentication())
     

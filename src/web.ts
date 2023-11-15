@@ -1,10 +1,10 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { CapacitorAuth0Plugin, Auth0User } from './definitions';
+import type { Auth0Plugin, Auth0User } from './definitions';
 
-export class CapacitorAuth0Web
+export class Auth0Web
   extends WebPlugin
-  implements CapacitorAuth0Plugin
+  implements Auth0Plugin
 {
 
   load(): Promise<Auth0User> {
