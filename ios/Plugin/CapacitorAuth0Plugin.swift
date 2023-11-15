@@ -12,7 +12,19 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     let credentialsManager: CredentialsManager = CredentialsManager(authentication: Auth0.authentication())
     
     @objc func load(_ call: CAPPluginCall) {
-        self.getUserInfo(call)
+        self.credentialsManager.renew { result in
+            switch result {
+            case .success(let credentials):
+                let user = User(from: credentials.idToken)
+                call.resolve([
+                    "id": user?.id,
+                    "name": user?.name,
+                    "email": user?.email
+                ])
+            case .failure(let error):
+                call.resolve()
+            }
+        }
     }
 
     @objc func login(_ call: CAPPluginCall) {
