@@ -4,11 +4,11 @@
 export interface CapacitorAuth0Plugin {
 
   /**
-   * Configure the plugin with your Auth0 credentials.
-   * @param options  CapacitorAuth0Conf
-   * @returns Promise<void>
+   * Load auth0 plugin.
+   * For android, initialize the plugin with your Auth0 configuration.
+   * @returns Promise<Auth0User>  Current authenticated user or undefined.
    */
-  configure(options: CapacitorAuth0Conf): Promise<void>;
+  load(): Promise<Auth0User>;
 
   /**
    * Web Auth: Login with Auth0.
@@ -32,22 +32,6 @@ export interface CapacitorAuth0Plugin {
    * Get a latest authenticated user profile.
    */
   getUserInfo(): Promise<Auth0User>;
-}
-
-/**
- * Configuration options for the plugin.
- */
-export interface CapacitorAuth0Conf {
-
-  /**
-   * Your Auth0 domain.
-   */
-  domain: string;
-
-  /**
-   * Your Auth0 client ID.
-   */
-  clientId: string;
 }
 
 /**

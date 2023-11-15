@@ -61,7 +61,7 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 
 <docgen-index>
 
-* [`configure(...)`](#configure)
+* [`load()`](#load)
 * [`login()`](#login)
 * [`logout()`](#logout)
 * [`isAuthenticated()`](#isauthenticated)
@@ -75,17 +75,16 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 
 Capacitor Auth0 Plugin
 
-### configure(...)
+### load()
 
 ```typescript
-configure(options: CapacitorAuth0Conf) => Promise<void>
+load() => Promise<Auth0User>
 ```
 
-Configure the plugin with your Auth0 credentials.
+Load auth0 plugin.
+For android, initialize the plugin with your Auth0 configuration.
 
-| Param         | Type                                                              | Description                                          |
-| ------------- | ----------------------------------------------------------------- | ---------------------------------------------------- |
-| **`options`** | <code><a href="#capacitorauth0conf">CapacitorAuth0Conf</a></code> | <a href="#capacitorauth0conf">CapacitorAuth0Conf</a> |
+**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
 --------------------
 
@@ -141,16 +140,6 @@ Get a latest authenticated user profile.
 
 
 ### Interfaces
-
-
-#### CapacitorAuth0Conf
-
-Configuration options for the plugin.
-
-| Prop           | Type                | Description           |
-| -------------- | ------------------- | --------------------- |
-| **`domain`**   | <code>string</code> | Your Auth0 domain.    |
-| **`clientId`** | <code>string</code> | Your Auth0 client ID. |
 
 
 #### Auth0User

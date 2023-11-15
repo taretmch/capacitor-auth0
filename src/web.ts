@@ -1,13 +1,13 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { CapacitorAuth0Plugin, Auth0User, CapacitorAuth0Conf } from './definitions';
+import type { CapacitorAuth0Plugin, Auth0User } from './definitions';
 
 export class CapacitorAuth0Web
   extends WebPlugin
   implements CapacitorAuth0Plugin
 {
 
-  configure(_options: CapacitorAuth0Conf): Promise<void> {
+  load(): Promise<Auth0User> {
     return Promise.reject('Not implemented on web.');
   }
 
