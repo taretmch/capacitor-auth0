@@ -18,7 +18,7 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     @objc func login(_ call: CAPPluginCall) {
         Auth0
             .webAuth()
-            .scope("openid profile offline_access") // Include refresh_token
+            .scope("openid profile email offline_access") // Include refresh_token
             .start { result in
                 switch result {
                 case .success(let credentials):
