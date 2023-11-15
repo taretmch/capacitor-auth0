@@ -4,6 +4,7 @@ import android.util.Log
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.authentication.storage.CredentialsManagerException
 import com.auth0.android.authentication.storage.SecureCredentialsManager
 import com.auth0.android.authentication.storage.SharedPreferencesStorage
 import com.auth0.android.callback.Callback
@@ -34,7 +35,7 @@ class CapacitorAuth0Plugin : Plugin() {
 
         val loginCallback = object : Callback<Credentials, AuthenticationException> {
             override fun onFailure(exception: AuthenticationException) {
-                call.reject("AuthenticationException : ", exception.message)
+                call.reject("Failed with AuthenticationException : ", exception.message)
             }
             override fun onSuccess(credentials: Credentials) {
                 Log.d("CapacitorAuth0", "Login succeeded.")
@@ -46,7 +47,7 @@ class CapacitorAuth0Plugin : Plugin() {
                     call.resolve(data)
                 }
                 val callbackFailure = { exception: AuthenticationException ->
-                    call.reject("AuthenticationException : ", exception.message)
+                    call.reject("Failed with AuthenticationException : ", exception.message)
                 }
                 manager.saveCredentials(credentials)
                 getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
@@ -55,7 +56,7 @@ class CapacitorAuth0Plugin : Plugin() {
 
         WebAuthProvider.login(auth0)
             .withScheme("demo")
-            .withScope("openid profile email")
+            .withScope("openid profile email offline_access")
             .start(context, loginCallback)
     }
 
@@ -67,7 +68,7 @@ class CapacitorAuth0Plugin : Plugin() {
                 call.resolve()
             }
             override fun onFailure(error: AuthenticationException) {
-                call.reject(error.message)
+                call.reject("Failed with ", error.message)
             }
         }
 
@@ -87,6 +88,38 @@ class CapacitorAuth0Plugin : Plugin() {
                         callbackSuccess(profile)
                     }
                 })
+    }
+
+    @PluginMethod
+    fun isAuthenticated(call: PluginCall) {
+        val loggedIn = manager.hasValidCredentials()
+        val data = JSObject()
+        data.put("result", loggedIn)
+        call.resolve(data)
+    }
+
+    @PluginMethod
+    fun getUserInfo(call: PluginCall) {
+        manager.getCredentials(object: Callback<Credentials, CredentialsManagerException> {
+            override fun onSuccess(credentials: Credentials) {
+                val callbackSuccess = { userProfile: UserProfile ->
+                    val data = JSObject()
+                    data.put("id", userProfile.getId())
+                    data.put("name", userProfile.name)
+                    data.put("email", userProfile.email)
+                    call.resolve(data)
+                }
+                val callbackFailure = { exception: AuthenticationException ->
+                    call.reject("Failed with AuthenticationException : ", exception.message)
+                }
+                getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
+            }
+
+            override fun onFailure(error: CredentialsManagerException) {
+                // No credentials were previously saved or they couldn't be refreshed
+                call.reject("Failed with CredentialsManagerException", error.message)
+            }
+        })
     }
 
 }
