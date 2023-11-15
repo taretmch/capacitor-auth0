@@ -27,7 +27,7 @@ class CapacitorAuth0Plugin : Plugin() {
                     ?: throw IllegalArgumentException("clientId is required.")
             val domain = call.getString("domain")
                     ?: throw IllegalArgumentException("domain is required.")
-            this.auth0 = Auth0(clientId, domain)
+            this.auth0 = Auth0(context)
             call.resolve()
         } catch (e: IllegalArgumentException) {
             call.reject(e.message)
