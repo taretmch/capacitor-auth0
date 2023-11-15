@@ -137,23 +137,8 @@ window.customElements.define(
         }
       });
 
-      CapacitorAuth0.configure({
-        clientId: '',
-        domain: ''
-      }).then(async () => {
-        console.log('init user');
-
-        const isAuthenticated = (await CapacitorAuth0.isAuthenticated()).result;
-        if (isAuthenticated) {
-          console.log('isAuthenticated', isAuthenticated);
-
-          const user = await CapacitorAuth0.getUserInfo();
-          console.log('getUserInfo', user);
-          updateUI(user);
-        } else {
-          console.log('isAuthenticated', isAuthenticated);
-          updateUI(null);
-        }
+      CapacitorAuth0.load().then(user => {
+        updateUI(user);
       });
     }
   }
