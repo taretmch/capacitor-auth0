@@ -8,41 +8,39 @@ import Auth0
  */
 @objc(CapacitorAuth0Plugin)
 public class CapacitorAuth0Plugin: CAPPlugin {
+
+    let credentialsManager: CredentialsManager = CredentialsManager(authentication: Auth0.authentication())
     
-    var clientId: String?
-    var domain: String?
-    
-    @objc func configure(_ call: CAPPluginCall) {
-        guard
-            let clientId = call.getString("clientId"),
-            let domain = call.getString("domain") else {
-            call.reject("Failed to init CapacitorAuth0")
-            return
+    @objc func load(_ call: CAPPluginCall) {
+        self.credentialsManager.renew { result in
+            switch result {
+            case .success(let credentials):
+                let user = User(from: credentials.idToken)
+                call.resolve([
+                    "id": user?.id as Any,
+                    "name": user?.name as Any,
+                    "email": user?.email as Any
+                ])
+            case .failure(_):
+                call.resolve()
+            }
         }
-        
-        self.clientId = clientId
-        self.domain = domain
-        call.resolve()
     }
 
     @objc func login(_ call: CAPPluginCall) {
-        guard
-            let clientId = self.clientId,
-            let domain = self.domain else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-        
         Auth0
-            .webAuth(clientId: clientId, domain: domain)
+            .webAuth()
+            .scope("openid profile email offline_access") // Include refresh_token
             .start { result in
                 switch result {
                 case .success(let credentials):
                     let user = User(from: credentials.idToken)
+                    let didStore = self.credentialsManager.store(credentials: credentials)
+                    print("CapacitorAuth0 -- Credentials are saved: ", didStore)
                     call.resolve([
-                        "id": user?.id,
-                        "name": user?.name,
-                        "email": user?.email
+                        "id": user?.id as Any,
+                        "name": user?.name as Any,
+                        "email": user?.email as Any
                     ])
                 case .failure(let error):
                     call.reject("Failed with: \(error)")
@@ -52,23 +50,48 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
     
     @objc func logout(_ call: CAPPluginCall) {
-        guard
-            let clientId = self.clientId,
-            let domain = self.domain else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-        
         Auth0
-            .webAuth(clientId: clientId, domain: domain)
+            .webAuth()
             .clearSession { result in
                 switch result {
                 case .success:
+                    let didClear = self.credentialsManager.clear()
+                    print("CapacitorAuth0 -- Credentials are cleared: ", didClear)
                     call.resolve()
                 case .failure(let error):
                     call.reject("Failed with: \(error)")
                 }
             }
+
+    }
+    
+    @objc func isAuthenticated(_ call: CAPPluginCall) {
+        guard self.credentialsManager.canRenew() else {
+            call.resolve(["result": false])
+            return
+        }
+        call.resolve(["result": true])
+    }
+    
+    @objc func getUserInfo(_ call: CAPPluginCall) {
+        guard self.credentialsManager.canRenew() else {
+            call.reject("Not authenticated.")
+            return
+        }
+
+        self.credentialsManager.renew { result in
+            switch result {
+            case .success(let credentials):
+                let user = User(from: credentials.idToken)
+                call.resolve([
+                    "id": user?.id as Any,
+                    "name": user?.name as Any,
+                    "email": user?.email as Any
+                ])
+            case .failure(let error):
+                call.reject("Renewing credentials is failed with: \(error)")
+            }
+        }
 
     }
 }

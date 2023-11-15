@@ -4,15 +4,11 @@ import { CapacitorAuth0 } from '@taretmch/capacitor-auth0';
 window.customElements.define(
   'capacitor-auth0',
   class extends HTMLElement {
+
     constructor() {
       super();
 
       SplashScreen.hide();
-
-      CapacitorAuth0.configure({
-        clientId: '',
-        domain: ''
-      });
 
       const root = this.attachShadow({ mode: 'open' });
 
@@ -141,7 +137,9 @@ window.customElements.define(
         }
       });
 
-      updateUI(null); // 初期表示設定
+      CapacitorAuth0.load().then(user => {
+        updateUI(user);
+      });
     }
   }
 );

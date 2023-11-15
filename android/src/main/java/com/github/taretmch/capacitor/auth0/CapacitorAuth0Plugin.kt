@@ -4,75 +4,142 @@ import android.util.Log
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
 import com.auth0.android.authentication.AuthenticationException
+import com.auth0.android.authentication.storage.CredentialsManagerException
+import com.auth0.android.authentication.storage.SecureCredentialsManager
+import com.auth0.android.authentication.storage.SharedPreferencesStorage
+import com.auth0.android.callback.Callback
 import com.auth0.android.provider.WebAuthProvider
+import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
 import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @CapacitorPlugin(name = "CapacitorAuth0")
 class CapacitorAuth0Plugin : Plugin() {
 
     private lateinit var auth0: Auth0
+    private lateinit var manager: SecureCredentialsManager
 
     @PluginMethod
-    fun configure(call: PluginCall) {
-        try {
-            val clientId = call.getString("clientId")
-                    ?: throw IllegalArgumentException("clientId is required.")
-            val domain = call.getString("domain")
-                    ?: throw IllegalArgumentException("domain is required.")
-            this.auth0 = Auth0(clientId, domain)
-            call.resolve()
-        } catch (e: IllegalArgumentException) {
-            call.reject(e.message)
-        }
+    fun load(call: PluginCall) {
+        auth0 = Auth0(context)
+        manager = SecureCredentialsManager(context, AuthenticationAPIClient(auth0), SharedPreferencesStorage(context))
+
+        manager.getCredentials(object: Callback<Credentials, CredentialsManagerException> {
+            override fun onSuccess(credentials: Credentials) {
+                val callbackSuccess = { userProfile: UserProfile ->
+                    val data = JSObject()
+                    data.put("id", userProfile.getId())
+                    data.put("name", userProfile.name)
+                    data.put("email", userProfile.email)
+                    call.resolve(data)
+                }
+                val callbackFailure = { exception: AuthenticationException ->
+                    call.reject("Failed with AuthenticationException : ", exception.message)
+                }
+                getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
+            }
+
+            override fun onFailure(error: CredentialsManagerException) {
+                // No credentials were previously saved or they couldn't be refreshed
+                call.resolve()
+            }
+        })
     }
 
     @PluginMethod
     fun login(call: PluginCall) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val credentials = WebAuthProvider.login(auth0)
-                        .withScheme("demo")
-                        .withScope("openid profile email")
-                        .await(context)
-                val userProfile = getUserProfile(credentials.accessToken)
 
-                val data = JSObject()
-                data.put("id", userProfile.getId())
-                data.put("name", userProfile.name)
-                data.put("email", userProfile.email)
-                call.resolve(data)
-            } catch(e: AuthenticationException) {
-                call.reject(e.getDescription())
+        val loginCallback = object : Callback<Credentials, AuthenticationException> {
+            override fun onFailure(exception: AuthenticationException) {
+                call.reject("Failed with AuthenticationException : ", exception.message)
+            }
+            override fun onSuccess(credentials: Credentials) {
+                Log.d("CapacitorAuth0", "Login succeeded.")
+                val callbackSuccess = { userProfile: UserProfile ->
+                    val data = JSObject()
+                    data.put("id", userProfile.getId())
+                    data.put("name", userProfile.name)
+                    data.put("email", userProfile.email)
+                    call.resolve(data)
+                }
+                val callbackFailure = { exception: AuthenticationException ->
+                    call.reject("Failed with AuthenticationException : ", exception.message)
+                }
+                manager.saveCredentials(credentials)
+                getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
             }
         }
+
+        WebAuthProvider.login(auth0)
+            .withScheme("demo")
+            .withScope("openid profile email offline_access")
+            .start(context, loginCallback)
     }
 
     @PluginMethod
     fun logout(call: PluginCall) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                WebAuthProvider.logout(auth0)
-                        .withScheme("demo")
-                        .await(context)
-
+        val callbackLogout = object: Callback<Void?, AuthenticationException> {
+            override fun onSuccess(payload: Void?) {
+                Log.d("CapacitorAuth0", "Logout succeeded.")
+                manager.clearCredentials()
                 call.resolve()
-            } catch (e: AuthenticationException) {
-                call.reject(e.getDescription())
+            }
+            override fun onFailure(error: AuthenticationException) {
+                call.reject("Failed with ", error.message)
             }
         }
+
+        WebAuthProvider.logout(auth0)
+            .withScheme("demo")
+            .start(context, callbackLogout)
     }
 
-    private suspend fun getUserProfile(accessToken: String): UserProfile {
-        val apiClient = AuthenticationAPIClient(this.auth0)
-        return apiClient.userInfo(accessToken).await()
+    @PluginMethod
+    fun isAuthenticated(call: PluginCall) {
+        val loggedIn = manager.hasValidCredentials()
+        val data = JSObject()
+        data.put("result", loggedIn)
+        call.resolve(data)
     }
 
+    @PluginMethod
+    fun getUserInfo(call: PluginCall) {
+        manager.getCredentials(object: Callback<Credentials, CredentialsManagerException> {
+            override fun onSuccess(credentials: Credentials) {
+                val callbackSuccess = { userProfile: UserProfile ->
+                    val data = JSObject()
+                    data.put("id", userProfile.getId())
+                    data.put("name", userProfile.name)
+                    data.put("email", userProfile.email)
+                    call.resolve(data)
+                }
+                val callbackFailure = { exception: AuthenticationException ->
+                    call.reject("Failed with AuthenticationException : ", exception.message)
+                }
+                getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
+            }
+
+            override fun onFailure(error: CredentialsManagerException) {
+                // No credentials were previously saved or they couldn't be refreshed
+                call.reject("Failed with CredentialsManagerException", error.message)
+            }
+        })
+    }
+
+    private fun getUserProfile(accessToken: String, callbackSuccess: (UserProfile) -> Unit, callbackFailure: (AuthenticationException) -> Unit) {
+        AuthenticationAPIClient(auth0)
+                .userInfo(accessToken)
+                .start(object : Callback<UserProfile, AuthenticationException> {
+                    override fun onFailure(exception: AuthenticationException) {
+                        callbackFailure(exception)
+                    }
+                    override fun onSuccess(profile: UserProfile) {
+                        callbackSuccess(profile)
+                    }
+                })
+    }
 }

@@ -11,6 +11,21 @@ npx cap sync
 
 ### For iOS
 
+Setup Auth0 domain & clientId at `ios/App/App/Auth0.plist`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>ClientId</key>
+    <string>{AUTH0_CLIENT_ID}</string>
+    <key>Domain</key>
+    <string>{AUTH0_DOMAIN}</string>
+</dict>
+</plist>
+```
+
 Setup Custom URL Scheme at `Info.plist`.
 
 ```xml
@@ -61,9 +76,11 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 
 <docgen-index>
 
-* [`configure(...)`](#configure)
+* [`load()`](#load)
 * [`login()`](#login)
 * [`logout()`](#logout)
+* [`isAuthenticated()`](#isauthenticated)
+* [`getUserInfo()`](#getuserinfo)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -71,15 +88,18 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### configure(...)
+Capacitor Auth0 Plugin
+
+### load()
 
 ```typescript
-configure(options: CapacitorAuth0Conf) => Promise<void>
+load() => Promise<Auth0User>
 ```
 
-| Param         | Type                                                              |
-| ------------- | ----------------------------------------------------------------- |
-| **`options`** | <code><a href="#capacitorauth0conf">CapacitorAuth0Conf</a></code> |
+Load auth0 plugin.
+For android, initialize the plugin with your Auth0 configuration.
+
+**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
 --------------------
 
@@ -89,6 +109,8 @@ configure(options: CapacitorAuth0Conf) => Promise<void>
 ```typescript
 login() => Promise<Auth0User>
 ```
+
+Web Auth: Login with Auth0.
 
 **Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
@@ -101,26 +123,48 @@ login() => Promise<Auth0User>
 logout() => Promise<void>
 ```
 
+Web Auth: Logout from Auth0.
+
+--------------------
+
+
+### isAuthenticated()
+
+```typescript
+isAuthenticated() => Promise<{ result: boolean; }>
+```
+
+Check if a user is authenticated.
+
+**Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
+
+--------------------
+
+
+### getUserInfo()
+
+```typescript
+getUserInfo() => Promise<Auth0User>
+```
+
+Get a latest authenticated user profile.
+
+**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
+
 --------------------
 
 
 ### Interfaces
 
 
-#### CapacitorAuth0Conf
-
-| Prop           | Type                |
-| -------------- | ------------------- |
-| **`domain`**   | <code>string</code> |
-| **`clientId`** | <code>string</code> |
-
-
 #### Auth0User
 
-| Prop        | Type                |
-| ----------- | ------------------- |
-| **`id`**    | <code>string</code> |
-| **`name`**  | <code>string</code> |
-| **`email`** | <code>string</code> |
+Auth0 user profile.
+
+| Prop        | Type                | Description |
+| ----------- | ------------------- | ----------- |
+| **`id`**    | <code>string</code> | User ID.    |
+| **`name`**  | <code>string</code> | User name.  |
+| **`email`** | <code>string</code> | User email. |
 
 </docgen-api>
