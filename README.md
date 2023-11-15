@@ -11,6 +11,21 @@ npx cap sync
 
 ### For iOS
 
+Setup Auth0 domain & clientId at `ios/App/App/Auth0.plist`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>ClientId</key>
+    <string>{AUTH0_CLIENT_ID}</string>
+    <key>Domain</key>
+    <string>{AUTH0_DOMAIN}</string>
+</dict>
+</plist>
+```
+
 Setup Custom URL Scheme at `Info.plist`.
 
 ```xml
