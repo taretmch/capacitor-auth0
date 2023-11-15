@@ -7,4 +7,6 @@ CAP_PLUGIN(CapacitorAuth0Plugin, "CapacitorAuth0",
            CAP_PLUGIN_METHOD(configure, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(login, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(logout, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(isAuthenticated, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(getUserInfo, CAPPluginReturnPromise);
 )
