@@ -24,10 +24,30 @@ class CapacitorAuth0Plugin : Plugin() {
     private lateinit var manager: SecureCredentialsManager
 
     @PluginMethod
-    fun configure(call: PluginCall) {
+    fun load(call: PluginCall) {
         auth0 = Auth0(context)
         manager = SecureCredentialsManager(context, AuthenticationAPIClient(auth0), SharedPreferencesStorage(context))
-        call.resolve()
+
+        manager.getCredentials(object: Callback<Credentials, CredentialsManagerException> {
+            override fun onSuccess(credentials: Credentials) {
+                val callbackSuccess = { userProfile: UserProfile ->
+                    val data = JSObject()
+                    data.put("id", userProfile.getId())
+                    data.put("name", userProfile.name)
+                    data.put("email", userProfile.email)
+                    call.resolve(data)
+                }
+                val callbackFailure = { exception: AuthenticationException ->
+                    call.reject("Failed with AuthenticationException : ", exception.message)
+                }
+                getUserProfile(credentials.accessToken, callbackSuccess, callbackFailure)
+            }
+
+            override fun onFailure(error: CredentialsManagerException) {
+                // No credentials were previously saved or they couldn't be refreshed
+                call.resolve()
+            }
+        })
     }
 
     @PluginMethod
@@ -77,19 +97,6 @@ class CapacitorAuth0Plugin : Plugin() {
             .start(context, callbackLogout)
     }
 
-    private fun getUserProfile(accessToken: String, callbackSuccess: (UserProfile) -> Unit, callbackFailure: (AuthenticationException) -> Unit) {
-        AuthenticationAPIClient(this.auth0)
-                .userInfo(accessToken)
-                .start(object : Callback<UserProfile, AuthenticationException> {
-                    override fun onFailure(exception: AuthenticationException) {
-                        callbackFailure(exception)
-                    }
-                    override fun onSuccess(profile: UserProfile) {
-                        callbackSuccess(profile)
-                    }
-                })
-    }
-
     @PluginMethod
     fun isAuthenticated(call: PluginCall) {
         val loggedIn = manager.hasValidCredentials()
@@ -122,4 +129,16 @@ class CapacitorAuth0Plugin : Plugin() {
         })
     }
 
+    private fun getUserProfile(accessToken: String, callbackSuccess: (UserProfile) -> Unit, callbackFailure: (AuthenticationException) -> Unit) {
+        AuthenticationAPIClient(auth0)
+                .userInfo(accessToken)
+                .start(object : Callback<UserProfile, AuthenticationException> {
+                    override fun onFailure(exception: AuthenticationException) {
+                        callbackFailure(exception)
+                    }
+                    override fun onSuccess(profile: UserProfile) {
+                        callbackSuccess(profile)
+                    }
+                })
+    }
 }
