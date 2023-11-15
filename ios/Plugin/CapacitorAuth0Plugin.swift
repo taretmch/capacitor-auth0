@@ -17,11 +17,11 @@ public class CapacitorAuth0Plugin: CAPPlugin {
             case .success(let credentials):
                 let user = User(from: credentials.idToken)
                 call.resolve([
-                    "id": user?.id,
-                    "name": user?.name,
-                    "email": user?.email
+                    "id": user?.id as Any,
+                    "name": user?.name as Any,
+                    "email": user?.email as Any
                 ])
-            case .failure(let error):
+            case .failure(_):
                 call.resolve()
             }
         }
@@ -38,9 +38,9 @@ public class CapacitorAuth0Plugin: CAPPlugin {
                     let didStore = self.credentialsManager.store(credentials: credentials)
                     print("CapacitorAuth0 -- Credentials are saved: ", didStore)
                     call.resolve([
-                        "id": user?.id,
-                        "name": user?.name,
-                        "email": user?.email
+                        "id": user?.id as Any,
+                        "name": user?.name as Any,
+                        "email": user?.email as Any
                     ])
                 case .failure(let error):
                     call.reject("Failed with: \(error)")
@@ -84,9 +84,9 @@ public class CapacitorAuth0Plugin: CAPPlugin {
             case .success(let credentials):
                 let user = User(from: credentials.idToken)
                 call.resolve([
-                    "id": user?.id,
-                    "name": user?.name,
-                    "email": user?.email
+                    "id": user?.id as Any,
+                    "name": user?.name as Any,
+                    "email": user?.email as Any
                 ])
             case .failure(let error):
                 call.reject("Renewing credentials is failed with: \(error)")
