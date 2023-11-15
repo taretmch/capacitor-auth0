@@ -85,6 +85,7 @@ class CapacitorAuth0Plugin : Plugin() {
         val callbackLogout = object: Callback<Void?, AuthenticationException> {
             override fun onSuccess(payload: Void?) {
                 Log.d("CapacitorAuth0", "Logout succeeded.")
+                manager.clearCredentials()
                 call.resolve()
             }
             override fun onFailure(error: AuthenticationException) {
