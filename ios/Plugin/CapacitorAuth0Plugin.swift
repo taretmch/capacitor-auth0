@@ -8,42 +8,22 @@ import Auth0
  */
 @objc(CapacitorAuth0Plugin)
 public class CapacitorAuth0Plugin: CAPPlugin {
+
+    let credentialsManager: CredentialsManager = CredentialsManager(authentication: Auth0.authentication())
     
-    var clientId: String?
-    var domain: String?
-    var credentialsManager: CredentialsManager?
-    
-    @objc func configure(_ call: CAPPluginCall) {
-        guard
-            let clientId = call.getString("clientId"),
-            let domain = call.getString("domain") else {
-            call.reject("Failed to init CapacitorAuth0")
-            return
-        }
-        
-        self.clientId = clientId
-        self.domain = domain
-        self.credentialsManager = CredentialsManager(authentication: Auth0.authentication())
-        call.resolve()
+    @objc func load(_ call: CAPPluginCall) {
+        self.getUserInfo(call)
     }
 
     @objc func login(_ call: CAPPluginCall) {
-        guard
-            let clientId = self.clientId,
-            let domain = self.domain,
-            let credentialsManager = self.credentialsManager else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-        
         Auth0
-            .webAuth(clientId: clientId, domain: domain)
+            .webAuth()
             .scope("openid profile offline_access") // Include refresh_token
             .start { result in
                 switch result {
                 case .success(let credentials):
                     let user = User(from: credentials.idToken)
-                    let didStore = credentialsManager.store(credentials: credentials)
+                    let didStore = self.credentialsManager.store(credentials: credentials)
                     print("CapacitorAuth0 -- Credentials are saved: ", didStore)
                     call.resolve([
                         "id": user?.id,
@@ -58,20 +38,12 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
     
     @objc func logout(_ call: CAPPluginCall) {
-        guard
-            let clientId = self.clientId,
-            let domain = self.domain,
-            let credentialsManager = self.credentialsManager else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-        
         Auth0
-            .webAuth(clientId: clientId, domain: domain)
+            .webAuth()
             .clearSession { result in
                 switch result {
                 case .success:
-                    let didClear = credentialsManager.clear()
+                    let didClear = self.credentialsManager.clear()
                     print("CapacitorAuth0 -- Credentials are cleared: ", didClear)
                     call.resolve()
                 case .failure(let error):
@@ -82,13 +54,7 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
     
     @objc func isAuthenticated(_ call: CAPPluginCall) {
-        guard
-            let credentialsManager = self.credentialsManager else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-        
-        guard credentialsManager.canRenew() else {
+        guard self.credentialsManager.canRenew() else {
             call.resolve(["result": false])
             return
         }
@@ -96,18 +62,12 @@ public class CapacitorAuth0Plugin: CAPPlugin {
     }
     
     @objc func getUserInfo(_ call: CAPPluginCall) {
-        guard
-            let credentialsManager = self.credentialsManager else {
-            call.reject("Plugin is not configured. Call configure method before login.")
-            return
-        }
-
-        guard credentialsManager.canRenew() else {
+        guard self.credentialsManager.canRenew() else {
             call.reject("Not authenticated.")
             return
         }
 
-        credentialsManager.renew { result in
+        self.credentialsManager.renew { result in
             switch result {
             case .success(let credentials):
                 let user = User(from: credentials.idToken)
