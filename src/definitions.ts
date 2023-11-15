@@ -1,7 +1,7 @@
 /**
  * Capacitor Auth0 Plugin
  */
-export interface CapacitorAuth0Plugin {
+export interface Auth0Plugin {
 
   /**
    * Load auth0 plugin.

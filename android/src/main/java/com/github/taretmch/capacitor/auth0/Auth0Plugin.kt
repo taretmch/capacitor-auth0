@@ -17,8 +17,8 @@ import com.getcapacitor.PluginCall
 import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.CapacitorPlugin
 
-@CapacitorPlugin(name = "CapacitorAuth0")
-class CapacitorAuth0Plugin : Plugin() {
+@CapacitorPlugin(name = "Auth0")
+class Auth0Plugin : Plugin() {
 
     private lateinit var auth0: Auth0
     private lateinit var manager: SecureCredentialsManager
@@ -27,6 +27,8 @@ class CapacitorAuth0Plugin : Plugin() {
     fun load(call: PluginCall) {
         auth0 = Auth0(context)
         manager = SecureCredentialsManager(context, AuthenticationAPIClient(auth0), SharedPreferencesStorage(context))
+        Log.d("CapacitorAuth0", "Auth0 clientId: " + auth0.clientId)
+        Log.d("CapacitorAuth0", "Auth0 domain: " + auth0.getDomainUrl())
 
         manager.getCredentials(object: Callback<Credentials, CredentialsManagerException> {
             override fun onSuccess(credentials: Credentials) {
