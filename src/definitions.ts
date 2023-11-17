@@ -32,6 +32,12 @@ export interface Auth0Plugin {
    * Get a latest authenticated user profile.
    */
   getUserInfo(): Promise<Auth0User>;
+
+  /**
+   * Get credentials.
+   * @returns Promise<Credentials>
+   */
+  getCredentials(): Promise<Credentials>;
 }
 
 /**
@@ -53,4 +59,41 @@ export interface Auth0User {
    * User email.
    */
   email: string;
+}
+
+/**
+ * Auth0 credentials.
+ */
+export interface Credentials {
+
+  /**
+   * Identity token that contains user profile information.
+   */
+  idToken: string;
+
+  /**
+   * Access token for Auth0 API.
+   */
+  accessToken: string;
+
+  /**
+   * Access token expiration date.
+   * Once expired, the Access Token can no longer be used to access an API and a new Access Token needs to be obtained.
+   */
+  expiresAt: string;
+
+  /**
+   * Granted scopes for the access token.
+   */
+  scope: string;
+
+  /**
+   * Refresh token that can be used to request a new access token without signin again.
+   */
+  refreshToken: string;
+
+  /**
+   * Type of received token.
+   */
+  tokenType: string;
 }

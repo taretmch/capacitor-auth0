@@ -81,6 +81,7 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 * [`logout()`](#logout)
 * [`isAuthenticated()`](#isauthenticated)
 * [`getUserInfo()`](#getuserinfo)
+* [`getCredentials()`](#getcredentials)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -154,6 +155,19 @@ Get a latest authenticated user profile.
 --------------------
 
 
+### getCredentials()
+
+```typescript
+getCredentials() => Promise<Credentials>
+```
+
+Get credentials.
+
+**Returns:** <code>Promise&lt;<a href="#credentials">Credentials</a>&gt;</code>
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -166,5 +180,19 @@ Auth0 user profile.
 | **`id`**    | <code>string</code> | User ID.    |
 | **`name`**  | <code>string</code> | User name.  |
 | **`email`** | <code>string</code> | User email. |
+
+
+#### Credentials
+
+Auth0 credentials.
+
+| Prop               | Type                | Description                                                                                                                                      |
+| ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`idToken`**      | <code>string</code> | Identity token that contains user profile information.                                                                                           |
+| **`accessToken`**  | <code>string</code> | Access token for Auth0 API.                                                                                                                      |
+| **`expiresAt`**    | <code>string</code> | Access token expiration date. Once expired, the Access Token can no longer be used to access an API and a new Access Token needs to be obtained. |
+| **`scope`**        | <code>string</code> | Granted scopes for the access token.                                                                                                             |
+| **`refreshToken`** | <code>string</code> | Refresh token that can be used to request a new access token without signin again.                                                               |
+| **`tokenType`**    | <code>string</code> | Type of received token.                                                                                                                          |
 
 </docgen-api>

@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { Auth0Plugin, Auth0User } from './definitions';
+import type { Auth0Plugin, Auth0User, Credentials } from './definitions';
 
 export class Auth0Web
   extends WebPlugin
@@ -24,6 +24,10 @@ export class Auth0Web
   }
 
   getUserInfo(): Promise<Auth0User> {
+    return Promise.reject('Not implemented on web.');
+  }
+
+  getCredentials(): Promise<Credentials> {
     return Promise.reject('Not implemented on web.');
   }
 
