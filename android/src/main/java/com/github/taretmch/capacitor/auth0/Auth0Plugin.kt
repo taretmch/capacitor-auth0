@@ -132,6 +132,26 @@ class Auth0Plugin : Plugin() {
         })
     }
 
+    @PluginMethod
+    fun getCredentials(call: PluginCall) {
+        manager.getCredentials(object : Callback<Credentials, CredentialsManagerException> {
+            override fun onSuccess(credentials: Credentials) {
+                val data = JSObject()
+                data.put("idToken", credentials.idToken)
+                data.put("accessToken", credentials.accessToken)
+                data.put("expiresAt", credentials.expiresAt)
+                data.put("scope", credentials.scope)
+                data.put("refreshToken", credentials.refreshToken)
+                data.put("tokenType", credentials.type)
+                call.resolve(data)
+            }
+            override fun onFailure(error: CredentialsManagerException) {
+                Log.d("CapacitorAuth0", "Failed with CredentialsManagerException: ${error.message}")
+                call.resolve()
+            }
+        })
+    }
+
     private fun getUserProfile(accessToken: String, callbackSuccess: (UserProfile) -> Unit, callbackFailure: (AuthenticationException) -> Unit) {
         AuthenticationAPIClient(auth0)
                 .userInfo(accessToken)

@@ -94,4 +94,24 @@ public class Auth0Plugin: CAPPlugin {
         }
 
     }
+    
+    @objc func getCredentials(_ call: CAPPluginCall) {
+        self.credentialsManager.credentials { result in
+            switch result {
+            case .success(let credentials):
+                call.resolve([
+                    "idToken": credentials.idToken,
+                    "accessToken": credentials.accessToken,
+                    "expiresAt": credentials.expiresIn,
+                    "scope": credentials.scope as Any,
+                    "refreshToken": credentials.refreshToken  as Any,
+                    "tokenType": credentials.tokenType
+                ])
+            case .failure(let error):
+                print("Failed with: \(error)")
+                call.resolve()
+            }
+        }
+
+    }
 }

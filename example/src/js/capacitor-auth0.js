@@ -116,12 +116,19 @@ window.customElements.define(
         }
       }
 
+      function showCredentials() {
+        return Auth0.getCredentials().then(credentials => {
+          console.log(credentials);
+        })
+      }
+
+
       self.shadowRoot.querySelector('#login').addEventListener('click', async function (e) {
         try {
-
           const user = await Auth0.login()
           console.log('login', user);
           updateUI(user);
+          await showCredentials();
         } catch (e) {
           console.error(e);
         }
@@ -132,6 +139,7 @@ window.customElements.define(
           const res = await Auth0.logout()
           console.log('logout', res);
           updateUI(null);
+          await showCredentials();
         } catch (e) {
           console.error(e);
         }
@@ -139,6 +147,7 @@ window.customElements.define(
 
       Auth0.load().then(user => {
         updateUI(user);
+        return showCredentials();
       });
     }
   }

@@ -81,6 +81,7 @@ capacitor-auth0 has no implementation for web. You can use [auth0-spa-js](https:
 * [`logout()`](#logout)
 * [`isAuthenticated()`](#isauthenticated)
 * [`getUserInfo()`](#getuserinfo)
+* [`getCredentials()`](#getcredentials)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -97,7 +98,10 @@ load() => Promise<Auth0User>
 ```
 
 Load auth0 plugin.
+Get the authenticated user profile and update the credentials
+using the refresh token if the access token is expired.
 For android, initialize the plugin with your Auth0 configuration.
+Return undefined if the user is not authenticated.
 
 **Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
@@ -134,7 +138,7 @@ Web Auth: Logout from Auth0.
 isAuthenticated() => Promise<{ result: boolean; }>
 ```
 
-Check if a user is authenticated.
+Check if the user is authenticated.
 
 **Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
 
@@ -147,9 +151,25 @@ Check if a user is authenticated.
 getUserInfo() => Promise<Auth0User>
 ```
 
-Get a latest authenticated user profile.
+Get the authenticated user profile.
+If the access token is expired, yield new credentials using the refresh token.
+Throws an error if the user is not authenticated.
 
 **Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
+
+--------------------
+
+
+### getCredentials()
+
+```typescript
+getCredentials() => Promise<Credentials>
+```
+
+Get credentials and yield new credentials using the refresh token if the access token is expired.
+Return undefined if the user is not authenticated.
+
+**Returns:** <code>Promise&lt;<a href="#credentials">Credentials</a>&gt;</code>
 
 --------------------
 
@@ -166,5 +186,19 @@ Auth0 user profile.
 | **`id`**    | <code>string</code> | User ID.    |
 | **`name`**  | <code>string</code> | User name.  |
 | **`email`** | <code>string</code> | User email. |
+
+
+#### Credentials
+
+Auth0 credentials.
+
+| Prop               | Type                | Description                                                                                                                                      |
+| ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`idToken`**      | <code>string</code> | Identity token that contains user profile information.                                                                                           |
+| **`accessToken`**  | <code>string</code> | Access token for Auth0 API.                                                                                                                      |
+| **`expiresAt`**    | <code>string</code> | Access token expiration date. Once expired, the access token can no longer be used to access an API and a new access token needs to be obtained. |
+| **`scope`**        | <code>string</code> | Granted scopes for the access token. Undefined if no scope is granted.                                                                           |
+| **`refreshToken`** | <code>string</code> | Refresh token that can be used to request a new access token without signin again. Undefined if no refresh token is granted.                     |
+| **`tokenType`**    | <code>string</code> | Type of received token.                                                                                                                          |
 
 </docgen-api>
