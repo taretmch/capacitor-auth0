@@ -85,17 +85,20 @@ export interface Credentials {
 
   /**
    * Access token expiration date.
-   * Once expired, the Access Token can no longer be used to access an API and a new Access Token needs to be obtained.
+   * Once expired, the access token can no longer be used to access an API and
+   * a new access token needs to be obtained.
    */
   expiresAt: string;
 
   /**
    * Granted scopes for the access token.
+   * Undefined if no scope is granted.
    */
   scope: string;
 
   /**
    * Refresh token that can be used to request a new access token without signin again.
+   * Undefined if no refresh token is granted.
    */
   refreshToken: string;
 

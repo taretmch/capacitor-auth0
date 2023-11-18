@@ -196,9 +196,9 @@ Auth0 credentials.
 | ------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **`idToken`**      | <code>string</code> | Identity token that contains user profile information.                                                                                           |
 | **`accessToken`**  | <code>string</code> | Access token for Auth0 API.                                                                                                                      |
-| **`expiresAt`**    | <code>string</code> | Access token expiration date. Once expired, the Access Token can no longer be used to access an API and a new Access Token needs to be obtained. |
-| **`scope`**        | <code>string</code> | Granted scopes for the access token.                                                                                                             |
-| **`refreshToken`** | <code>string</code> | Refresh token that can be used to request a new access token without signin again.                                                               |
+| **`expiresAt`**    | <code>string</code> | Access token expiration date. Once expired, the access token can no longer be used to access an API and a new access token needs to be obtained. |
+| **`scope`**        | <code>string</code> | Granted scopes for the access token. Undefined if no scope is granted.                                                                           |
+| **`refreshToken`** | <code>string</code> | Refresh token that can be used to request a new access token without signin again. Undefined if no refresh token is granted.                     |
 | **`tokenType`**    | <code>string</code> | Type of received token.                                                                                                                          |
 
 </docgen-api>
