@@ -9,15 +9,15 @@ export interface Auth0Plugin {
    * using the refresh token if the access token is expired.
    * For android, initialize the plugin with your Auth0 configuration.
    * Return undefined if the user is not authenticated.
-   * @returns Promise<Auth0User>  Current authenticated user or undefined.
+   * @returns Promise<User>  Current authenticated user or undefined.
    */
-  load(): Promise<Auth0User>;
+  load(): Promise<User>;
 
   /**
    * Web Auth: Login with Auth0.
-   * @returns Promise<Auth0User>
+   * @returns Promise<User>
    */
-  login(): Promise<Auth0User>;
+  login(): Promise<User>;
 
   /**
    * Web Auth: Logout from Auth0.
@@ -35,9 +35,9 @@ export interface Auth0Plugin {
    * Get the authenticated user profile.
    * If the access token is expired, yield new credentials using the refresh token.
    * Throws an error if the user is not authenticated.
-   * @returns Promise<Auth0User>
+   * @returns Promise<User>
    */
-  getUserInfo(): Promise<Auth0User>;
+  getUserInfo(): Promise<User>;
 
   /**
    * Get credentials and yield new credentials using the refresh token if the access token is expired.
@@ -50,7 +50,7 @@ export interface Auth0Plugin {
 /**
  * Auth0 user profile.
  */
-export interface Auth0User {
+export interface User {
 
   /**
    * User ID.

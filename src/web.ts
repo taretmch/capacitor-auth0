@@ -1,17 +1,17 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { Auth0Plugin, Auth0User, Credentials } from './definitions';
+import type { Auth0Plugin, User, Credentials } from './definitions';
 
 export class Auth0Web
   extends WebPlugin
   implements Auth0Plugin
 {
 
-  load(): Promise<Auth0User> {
+  load(): Promise<User> {
     return Promise.reject('Not implemented on web.');
   }
 
-  login(): Promise<Auth0User> {
+  login(): Promise<User> {
     return Promise.reject('Not implemented on web.');
   }
 
@@ -23,7 +23,7 @@ export class Auth0Web
     return Promise.reject('Not implemented on web.');
   }
 
-  getUserInfo(): Promise<Auth0User> {
+  getUserInfo(): Promise<User> {
     return Promise.reject('Not implemented on web.');
   }
 

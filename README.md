@@ -94,7 +94,7 @@ Capacitor Auth0 Plugin
 ### load()
 
 ```typescript
-load() => Promise<Auth0User>
+load() => Promise<User>
 ```
 
 Load auth0 plugin.
@@ -103,7 +103,7 @@ using the refresh token if the access token is expired.
 For android, initialize the plugin with your Auth0 configuration.
 Return undefined if the user is not authenticated.
 
-**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#user">User</a>&gt;</code>
 
 --------------------
 
@@ -111,12 +111,12 @@ Return undefined if the user is not authenticated.
 ### login()
 
 ```typescript
-login() => Promise<Auth0User>
+login() => Promise<User>
 ```
 
 Web Auth: Login with Auth0.
 
-**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#user">User</a>&gt;</code>
 
 --------------------
 
@@ -148,14 +148,14 @@ Check if the user is authenticated.
 ### getUserInfo()
 
 ```typescript
-getUserInfo() => Promise<Auth0User>
+getUserInfo() => Promise<User>
 ```
 
 Get the authenticated user profile.
 If the access token is expired, yield new credentials using the refresh token.
 Throws an error if the user is not authenticated.
 
-**Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#user">User</a>&gt;</code>
 
 --------------------
 
@@ -177,15 +177,15 @@ Return undefined if the user is not authenticated.
 ### Interfaces
 
 
-#### Auth0User
+#### User
 
 Auth0 user profile.
 
-| Prop        | Type                | Description |
-| ----------- | ------------------- | ----------- |
-| **`id`**    | <code>string</code> | User ID.    |
-| **`name`**  | <code>string</code> | User name.  |
-| **`email`** | <code>string</code> | User email. |
+| Prop        | Type                | Description                     |
+| ----------- | ------------------- | ------------------------------- |
+| **`id`**    | <code>string</code> | <a href="#user">User</a> ID.    |
+| **`name`**  | <code>string</code> | <a href="#user">User</a> name.  |
+| **`email`** | <code>string</code> | <a href="#user">User</a> email. |
 
 
 #### Credentials
