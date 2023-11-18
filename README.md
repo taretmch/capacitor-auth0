@@ -98,7 +98,10 @@ load() => Promise<Auth0User>
 ```
 
 Load auth0 plugin.
+Get the authenticated user profile and update the credentials
+using the refresh token if the access token is expired.
 For android, initialize the plugin with your Auth0 configuration.
+Return undefined if the user is not authenticated.
 
 **Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
@@ -135,7 +138,7 @@ Web Auth: Logout from Auth0.
 isAuthenticated() => Promise<{ result: boolean; }>
 ```
 
-Check if a user is authenticated.
+Check if the user is authenticated.
 
 **Returns:** <code>Promise&lt;{ result: boolean; }&gt;</code>
 
@@ -148,7 +151,9 @@ Check if a user is authenticated.
 getUserInfo() => Promise<Auth0User>
 ```
 
-Get a latest authenticated user profile.
+Get the authenticated user profile.
+If the access token is expired, yield new credentials using the refresh token.
+Throws an error if the user is not authenticated.
 
 **Returns:** <code>Promise&lt;<a href="#auth0user">Auth0User</a>&gt;</code>
 
@@ -161,7 +166,8 @@ Get a latest authenticated user profile.
 getCredentials() => Promise<Credentials>
 ```
 
-Get credentials.
+Get credentials and yield new credentials using the refresh token if the access token is expired.
+Return undefined if the user is not authenticated.
 
 **Returns:** <code>Promise&lt;<a href="#credentials">Credentials</a>&gt;</code>
 
