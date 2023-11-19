@@ -181,11 +181,29 @@ Return undefined if the user is not authenticated.
 
 Auth0 user profile.
 
-| Prop        | Type                | Description                     |
-| ----------- | ------------------- | ------------------------------- |
-| **`id`**    | <code>string</code> | <a href="#user">User</a> ID.    |
-| **`name`**  | <code>string</code> | <a href="#user">User</a> name.  |
-| **`email`** | <code>string</code> | <a href="#user">User</a> email. |
+| Prop                      | Type                          | Description                                                     |
+| ------------------------- | ----------------------------- | --------------------------------------------------------------- |
+| **`id`**                  | <code>string</code>           | The user identifier.                                            |
+| **`name`**                | <code>string</code>           | The name of the user. Require `profile` scope.                  |
+| **`givenName`**           | <code>string</code>           | The given name of the user. Require `profile` scope.            |
+| **`familyName`**          | <code>string</code>           | The family name of the user. Require `profile` scope.           |
+| **`middleName`**          | <code>string</code>           | The middle name of the user. Require `profile` scope.           |
+| **`nickname`**            | <code>string</code>           | The nickname of the user. Require `profile` scope.              |
+| **`preferredUsername`**   | <code>string</code>           | The preferred username of the user. Require `profile` scope.    |
+| **`profile`**             | <code>string</code>           | The URL of the user's profile page. Require `profile` scope.    |
+| **`picture`**             | <code>string</code>           | The URL of the user's profile picture. Require `profile` scope. |
+| **`website`**             | <code>string</code>           | The URL of the user's website. Require `profile` scope.         |
+| **`gender`**              | <code>string</code>           | The gender of the user. Require `profile` scope.                |
+| **`birthdate`**           | <code>string</code>           | The birthdate of the user. Require `profile` scope.             |
+| **`zoneinfo`**            | <code>string</code>           | The zoneinfo of the user. Require `profile` scope.              |
+| **`locale`**              | <code>string</code>           | The locale of the user. Require `profile` scope.                |
+| **`updatedAt`**           | <code>string</code>           | Datetime of last updated. Requre `profile` scope.               |
+| **`email`**               | <code>string</code>           | The email address of the user. Require `email` scope.           |
+| **`emailVerified`**       | <code>boolean</code>          | If the user's email is verified. Require `email` scope.         |
+| **`address`**             | <code>[string: string]</code> | The address of the user. Require `address` scope.               |
+| **`phoneNumber`**         | <code>string</code>           | The phone number of the user. Require `phone` scope.            |
+| **`phoneNumberVerified`** | <code>boolean</code>          | If the user's phone number is verified. Require `phone` scope.  |
+| **`customClaims`**        | <code>[string: any]</code>    | Other claims from the identity token.                           |
 
 
 #### Credentials

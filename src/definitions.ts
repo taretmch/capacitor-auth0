@@ -53,19 +53,128 @@ export interface Auth0Plugin {
 export interface User {
 
   /**
-   * User ID.
+   * The user identifier.
    */
   id: string;
 
   /**
-   * User name.
+   * The name of the user.
+   * Require `profile` scope.
    */
   name: string;
 
   /**
-   * User email.
+   * The given name of the user.
+   * Require `profile` scope.
+   */
+  givenName: string;
+
+  /**
+   * The family name of the user.
+   * Require `profile` scope.
+   */
+  familyName: string;
+
+  /**
+   * The middle name of the user.
+   * Require `profile` scope.
+   */
+  middleName: string;
+
+  /**
+   * The nickname of the user.
+   * Require `profile` scope.
+   */
+  nickname: string;
+
+  /**
+   * The preferred username of the user.
+   * Require `profile` scope.
+   */
+  preferredUsername: string;
+
+  /**
+   * The URL of the user's profile page.
+   * Require `profile` scope.
+   */
+  profile: string;
+
+  /**
+   * The URL of the user's profile picture.
+   * Require `profile` scope.
+   */
+  picture: string;
+
+  /**
+   * The URL of the user's website.
+   * Require `profile` scope.
+   */
+  website: string;
+
+  /**
+   * The gender of the user.
+   * Require `profile` scope.
+   */
+  gender: string;
+
+  /**
+   * The birthdate of the user.
+   * Require `profile` scope.
+   */
+  birthdate: string;
+
+  /**
+   * The zoneinfo of the user.
+   * Require `profile` scope.
+   */
+  zoneinfo: string;
+
+  /**
+   * The locale of the user.
+   * Require `profile` scope.
+   */
+  locale: string;
+
+  /**
+   * Datetime of last updated.
+   * Requre `profile` scope.
+   */
+  updatedAt: string;
+
+  /**
+   * The email address of the user.
+   * Require `email` scope.
    */
   email: string;
+
+  /**
+   * If the user's email is verified.
+   * Require `email` scope.
+   */
+  emailVerified: boolean;
+
+  /**
+   * The address of the user.
+   * Require `address` scope.
+   */
+  address: [string: string];
+
+  /**
+   * The phone number of the user.
+   * Require `phone` scope.
+   */
+  phoneNumber: string;
+
+  /**
+   * If the user's phone number is verified.
+   * Require `phone` scope.
+   */
+  phoneNumberVerified: boolean;
+
+  /**
+   * Other claims from the identity token.
+   */
+  customClaims: [string: any];
 }
 
 /**
