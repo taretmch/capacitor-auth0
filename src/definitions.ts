@@ -15,6 +15,7 @@ export interface Auth0Plugin {
 
   /**
    * Web Auth: Login with Auth0.
+   * Default scope is `openid profile email offline_access`.
    * @returns Promise<User>
    */
   login(): Promise<User>;

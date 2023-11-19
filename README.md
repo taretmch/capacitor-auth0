@@ -115,6 +115,7 @@ login() => Promise<User>
 ```
 
 Web Auth: Login with Auth0.
+Default scope is `openid profile email offline_access`.
 
 **Returns:** <code>Promise&lt;<a href="#user">User</a>&gt;</code>
 
