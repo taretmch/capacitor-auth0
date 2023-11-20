@@ -19,7 +19,25 @@ public class Auth0Plugin: CAPPlugin {
                 call.resolve([
                     "id": user?.id as Any,
                     "name": user?.name as Any,
-                    "email": user?.email as Any
+                    "givenName": user?.givenName as Any,
+                    "familyName": user?.familyName as Any,
+                    "middleName": user?.middleName as Any,
+                    "nickname": user?.nickname as Any,
+                    "preferredUsername": user?.preferredUsername as Any,
+                    "profile": user?.profile as Any,
+                    "picture": user?.picture as Any,
+                    "website": user?.website as Any,
+                    "gender": user?.gender as Any,
+                    "birthdate": user?.birthdate as Any,
+                    "zoneinfo": user?.zoneinfo as Any,
+                    "locale": user?.locale as Any,
+                    "updatedAt": user?.updatedAt as Any,
+                    "email": user?.email as Any,
+                    "emailVerified": user?.emailVerified as Any,
+                    "address": user?.address as Any,
+                    "phoneNumber": user?.phoneNumber as Any,
+                    "phoneNumberVerified": user?.phoneNumberVerified as Any,
+                    "customClaims": user?.customClaims as Any
                 ])
             case .failure(_):
                 call.resolve()
@@ -40,7 +58,25 @@ public class Auth0Plugin: CAPPlugin {
                     call.resolve([
                         "id": user?.id as Any,
                         "name": user?.name as Any,
-                        "email": user?.email as Any
+                        "givenName": user?.givenName as Any,
+                        "familyName": user?.familyName as Any,
+                        "middleName": user?.middleName as Any,
+                        "nickname": user?.nickname as Any,
+                        "preferredUsername": user?.preferredUsername as Any,
+                        "profile": user?.profile as Any,
+                        "picture": user?.picture as Any,
+                        "website": user?.website as Any,
+                        "gender": user?.gender as Any,
+                        "birthdate": user?.birthdate as Any,
+                        "zoneinfo": user?.zoneinfo as Any,
+                        "locale": user?.locale as Any,
+                        "updatedAt": user?.updatedAt as Any,
+                        "email": user?.email as Any,
+                        "emailVerified": user?.emailVerified as Any,
+                        "address": user?.address as Any,
+                        "phoneNumber": user?.phoneNumber as Any,
+                        "phoneNumberVerified": user?.phoneNumberVerified as Any,
+                        "customClaims": user?.customClaims as Any
                     ])
                 case .failure(let error):
                     call.reject("Failed with: \(error)")
@@ -86,7 +122,25 @@ public class Auth0Plugin: CAPPlugin {
                 call.resolve([
                     "id": user?.id as Any,
                     "name": user?.name as Any,
-                    "email": user?.email as Any
+                    "givenName": user?.givenName as Any,
+                    "familyName": user?.familyName as Any,
+                    "middleName": user?.middleName as Any,
+                    "nickname": user?.nickname as Any,
+                    "preferredUsername": user?.preferredUsername as Any,
+                    "profile": user?.profile as Any,
+                    "picture": user?.picture as Any,
+                    "website": user?.website as Any,
+                    "gender": user?.gender as Any,
+                    "birthdate": user?.birthdate as Any,
+                    "zoneinfo": user?.zoneinfo as Any,
+                    "locale": user?.locale as Any,
+                    "updatedAt": user?.updatedAt as Any,
+                    "email": user?.email as Any,
+                    "emailVerified": user?.emailVerified as Any,
+                    "address": user?.address as Any,
+                    "phoneNumber": user?.phoneNumber as Any,
+                    "phoneNumberVerified": user?.phoneNumberVerified as Any,
+                    "customClaims": user?.customClaims as Any
                 ])
             case .failure(let error):
                 call.reject("Renewing credentials is failed with: \(error)")
