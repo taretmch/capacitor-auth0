@@ -146,6 +146,7 @@ window.customElements.define(
       });
 
       Auth0.load().then(user => {
+        console.log('load', user);
         updateUI(user);
         return showCredentials();
       });
